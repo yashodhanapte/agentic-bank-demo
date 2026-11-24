@@ -9,4 +9,5 @@ def configure_logging(level: int = logging.INFO) -> None:
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
     # The HTTP library logs every request at INFO, which drowns out our own lines.
-    logging.getLogger("httpx").setLevel(logging.WARNING)
+    for noisy in ("httpx", "httpx2", "httpcore"):
+        logging.getLogger(noisy).setLevel(logging.WARNING)

@@ -2,7 +2,6 @@
 so these run in a second, cost nothing and need no API key."""
 
 from dataclasses import replace
-from types import SimpleNamespace as NS
 
 import pytest
 
@@ -14,38 +13,9 @@ from bank_agents.errors import (
     TokenBudgetExceeded,
 )
 from bank_agents.tools import Tool
+from helpers import FakeClient, reply, text, tool_use
 
 FAST = Settings(tool_retry_delay=0)
-
-
-# ---- helpers: build fake API responses -------------------------------------
-def text(t):
-    return NS(type="text", text=t)
-
-
-def tool_use(id, name, **inputs):
-    return NS(type="tool_use", id=id, name=name, input=inputs)
-
-
-def reply(blocks, stop="end_turn", tin=10, tout=5):
-    return NS(
-        content=blocks,
-        stop_reason=stop,
-        usage=NS(input_tokens=tin, output_tokens=tout),
-    )
-
-
-class FakeClient:
-    """Hands back scripted replies in order and records every call."""
-
-    def __init__(self, replies):
-        self.replies = list(replies)
-        self.calls = []
-        self.messages = self  # so client.messages.create(...) works
-
-    def create(self, **kwargs):
-        self.calls.append(kwargs)
-        return self.replies.pop(0)
 
 
 def echo_tool(func=None):

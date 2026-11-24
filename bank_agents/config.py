@@ -14,6 +14,8 @@ class Settings:
     sdk_max_retries: int = 2          # the SDK retries timeouts and server errors
     tool_attempts: int = 3            # tries per tool call (flaky backends)
     tool_retry_delay: float = 0.5     # seconds, multiplied by the attempt number
+    mcp_call_timeout: float = 10.0    # seconds, per MCP tool call
+    mcp_start_timeout: float = 20.0   # seconds, to launch an MCP server and connect
 
     @classmethod
     def from_env(cls) -> "Settings":

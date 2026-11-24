@@ -58,6 +58,11 @@ class Tool:
                 raise ToolInputError(f"{key} must be {kind}")
             if not isinstance(value, expected):
                 raise ToolInputError(f"{key} must be {kind}")
+            if kind in ("integer", "number"):
+                if "minimum" in spec and value < spec["minimum"]:
+                    raise ToolInputError(f"{key} is out of range")
+                if "maximum" in spec and value > spec["maximum"]:
+                    raise ToolInputError(f"{key} is out of range")
             if isinstance(value, str):
                 value = value.strip()
                 if len(value) < spec.get("minLength", 1):
@@ -67,5 +72,7 @@ class Tool:
                 pattern = spec.get("pattern")
                 if pattern and not re.fullmatch(pattern, value):
                     raise ToolInputError(f"{key} has an invalid format")
+            if "enum" in spec and value not in spec["enum"]:
+                raise ToolInputError(f"{key} is not an allowed value")
             clean[key] = value
         return clean

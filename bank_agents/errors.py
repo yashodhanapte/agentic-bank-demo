@@ -21,6 +21,14 @@ class ModelCallError(AgentError):
     """The call to the model API failed (after the SDK's own retries)."""
 
 
+class ToolServerError(Exception):
+    """An MCP server reported an error for a tool call.
+
+    The server's own error text is deliberately NOT kept: it can echo input values or
+    expose internals. Details belong in the server's logs, not in the model's context.
+    """
+
+
 class ToolInputError(ValueError):
     """The model sent tool input that failed validation.
 
