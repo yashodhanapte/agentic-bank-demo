@@ -1,0 +1,16 @@
+# Secrets and environments: never commit these
+.env
+.venv/
+venv/
+
+# Python and tool caches
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
